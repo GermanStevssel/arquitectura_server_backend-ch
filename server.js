@@ -3,11 +3,11 @@ import express, { json, urlencoded } from "express";
 import session from "express-session";
 import cors from "cors";
 import path from "path";
-import passport from "passport";
 import { fileURLToPath } from "url";
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
 import { Server as HttpServer } from "http";
+import passport from "passport";
 import cluster from "cluster";
 import os from "os";
 import { config } from "./config/index.js";
@@ -17,8 +17,6 @@ import { cartRouter } from "./routers/cartsRouter.js";
 import { webRouter } from "./routers/webRouter.js";
 import orderRouter from "./routers/ordersRouter.js";
 import userRouter from "./routers/usersRouter.js";
-import yargObj from "./utils/yargs.js";
-import compression from "compression";
 import "./config/passport.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -34,7 +32,6 @@ app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(cors(`${config.cors}`));
-app.use(compression());
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -71,11 +68,8 @@ app.use("/api/order", orderRouter);
 app.use("/", webRouter);
 
 const numCPUs = os.cpus().length;
-const PORT = process.argv[2] || process.env.PORT || yargObj.port;
-const mode =
-	process.argv[3]?.toUpperCase() ||
-	yargObj.mode.toUpperCase() ||
-	process.env.MODE;
+const PORT = process.env.PORT || 8080;
+const mode = process.env.MODE;
 
 if (mode === "FORK") {
 	const server = httpServer.listen(PORT, () => {
