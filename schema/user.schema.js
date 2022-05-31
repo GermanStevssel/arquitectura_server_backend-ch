@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { config } from "../config/index.js";
 import cartSchema from "./carts.schema.js";
 import { logger } from "../utils/winston/index.js";
+import { encryptPassword } from "../services/user.services.js";
 
 const { model } = mongoose;
 mongoose.connect(`${config.mongodb.url}`);
@@ -23,7 +24,7 @@ userSchema.pre("save", async function () {
 	const user = this;
 	logger.log("info", `User: ${user}`);
 	if (user.isModified("password")) {
-		user.password = await bcrypt.hash(user.password, 10);
+		user.password = encryptPassword(user.password);
 	}
 });
 
