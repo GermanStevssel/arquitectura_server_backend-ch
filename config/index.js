@@ -1,4 +1,5 @@
 export const config = {
+	persistence: process.env.DB,
 	mongodb: {
 		url: process.env.mongoURI,
 	},

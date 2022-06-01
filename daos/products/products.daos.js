@@ -1,8 +1,9 @@
+import { config } from "../../config/index.js";
 import { productSchema } from "../../schema/products.schema.js";
 
 let productsDao;
 
-if (`${process.env.DB}` === "firebase") {
+if (`${config.persistence}` === "firebase") {
 	const { default: ProductsDaoFirebase } = await import(
 		"../../containers/FirebaseContainer.js"
 	);
