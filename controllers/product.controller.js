@@ -1,7 +1,7 @@
-import productsDao from "../daos/products/products.daos.js";
+import DAOFactory from "../daos/factory.js";
 import { logger } from "../utils/winston/index.js";
 
-const productsContainer = productsDao;
+const productsContainer = new DAOFactory();
 
 let administrador = true;
 
